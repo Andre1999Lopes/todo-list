@@ -22,7 +22,7 @@ const StyledHeader = styled.header`
 function Header(){
 	return(
 		<StyledHeader>
-			<h1 className='headerTitle'>Ultimate Procrastinador Pro</h1>
+			<h1 className='headerTitle'>Ultimate Procrastinator Pro</h1>
 		</StyledHeader>
 	)
 }

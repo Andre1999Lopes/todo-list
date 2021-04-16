@@ -139,9 +139,9 @@ function Block(props: IBlockProps) {
 	const [tasks, setTasks] = useState(Array<task>());
 
 	const deleteBlock = () => {
-		props.blocks.splice(props.index, 1);
+		const newBlocks = props.blocks.filter((value,index) => index !== props.index);
 		blockOptionsRef.current.classList.toggle('inv');
-		props.setBlocks([...props.blocks]);
+		props.setBlocks(newBlocks);
 	}
 
 	const handleNewTaskClick = () => {

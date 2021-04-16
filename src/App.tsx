@@ -17,11 +17,10 @@ function App() {
 
   const addBlock = () => {
     const blockName = inputRef.current.value;
+
 		if (blockName) {
 			inputRef.current.value = '';
-			blocks.push(blockName);
-			console.log(blocks);
-			setBlocks([...blocks]);
+			setBlocks([...blocks, blockName]);
 		}
   }
 

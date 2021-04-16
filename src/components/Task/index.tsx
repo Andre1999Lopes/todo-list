@@ -63,10 +63,11 @@ function Task(props: ITask) {
 	const taskRef = useRef() as React.MutableRefObject<HTMLParagraphElement>;
 	const [finishedTask, setFinishedTask] = useState(false);
 	const index = props.index;
+
 	const deleteTask = () => {
-		props.tasks.splice(index, 1);
+		const newTask = props.tasks.filter((val, ind) => ind !== index);
 		taskOptionsRef.current.classList.toggle('inv');
-		props.setTasks([...props.tasks]);
+		props.setTasks(newTask);
 	}
 
 	return(

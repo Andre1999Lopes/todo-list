@@ -1,25 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Input from './components/Input';
+import Button from './components/Button';
+import Block from './components/Block';
+import Header from './components/Header';
+import styled from 'styled-components';
+
+const StyledSection = styled.section`
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+`;
 
 function App() {
+  const [blocks, setBlocks] = useState(Array<string>());
+  const inputRef = React.useRef() as React.MutableRefObject<HTMLInputElement>;
+
+  const addBlock = () => {
+    const blockName = inputRef.current.value;
+		if (blockName) {
+			inputRef.current.value = '';
+			blocks.push(blockName);
+			console.log(blocks);
+			setBlocks([...blocks]);
+		}
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Input ref={inputRef} placeholder={'Nome do bloco de tarefas'}></Input>
+      <Button onClick={() => addBlock()}>Adicionar bloco</Button>
+			<StyledSection>
+				{
+					blocks.map((blockTitle, index) => 
+						<Block index={index} blocks={blocks} setBlocks={setBlocks} title={blockTitle} />
+					)
+				}
+			</StyledSection>
+    </>
   );
 }
 

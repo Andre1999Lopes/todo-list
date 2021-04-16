@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
+import { useStoreState, useStoreActions } from '../../store/hookStore';
 import styled from 'styled-components';
 import Task from '../Task';
 
@@ -123,30 +124,30 @@ const StyledDiv = styled.div`
 	}
 `;
 
-interface IBlockProps {
+interface IProps {
 	index: number;
-	title: string;
-	blocks: Array<string>;
-	setBlocks: React.Dispatch<React.SetStateAction<string[]>>;
-}
-
-interface task {
 	name: string;
-	urgent: boolean;
 }
 
-function Block(props: IBlockProps) {
-	const [tasks, setTasks] = useState(Array<task>());
+function Block({ index, name }:IProps ) {
+	const tasks = useStoreState(state => state.taskStore.blocks[index].tasks);
+	const addTaskAction = useStoreActions(actions => actions.taskStore.addTask);
+	const deleteBlock = useStoreActions(actions => actions.taskStore.removeBlock);
+	const blockIndex = index;
 
-	const deleteBlock = () => {
-		const newBlocks = props.blocks.filter((value,index) => index !== props.index);
-		blockOptionsRef.current.classList.toggle('inv');
-		props.setBlocks(newBlocks);
-	}
+	const blockOptionsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+	const newTaskOptionsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+	const selectRef = useRef() as React.MutableRefObject<HTMLSelectElement>;
+	const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
 	const handleNewTaskClick = () => {
 		newTaskOptionsRef.current.classList.toggle('inv');
 		blockOptionsRef.current.classList.toggle('inv');
+	}
+
+	const handleDeleteBlockClick = () => {
+		blockOptionsRef.current.classList.toggle('inv');
+		deleteBlock(index);
 	}
 
 	const addTask = () => {
@@ -155,28 +156,24 @@ function Block(props: IBlockProps) {
 			const urgent = selectRef.current.value === 'true' ? true : false;
 
 			const newTask = {
+				blockIndex: blockIndex,
 				name: taskName,
-				urgent
+				urgent,
+				finished: false
 			};
 
-			tasks.push(newTask);
 			inputRef.current.value = '';
 			newTaskOptionsRef.current.classList.toggle('inv');
-			setTasks([...tasks]);
+			addTaskAction(newTask);
 		}
 	}
-
-	const blockOptionsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
-	const newTaskOptionsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
-	const selectRef = useRef() as React.MutableRefObject<HTMLSelectElement>;
-	const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 	
 	return (
 		<StyledDiv>
-			<h1>{props.title}<span onClick={() => blockOptionsRef.current.classList.toggle('inv')}>...</span></h1>
+			<h1>{name}<span onClick={() => blockOptionsRef.current.classList.toggle('inv')}>...</span></h1>
 			<div ref={blockOptionsRef} className='options inv'>
 				<p onClick={handleNewTaskClick}>Adicionar tarefa</p>
-				<p onClick={deleteBlock}>Excluir bloco</p>
+				<p onClick={handleDeleteBlockClick}>Excluir bloco</p>
 			</div>
 			<div ref={newTaskOptionsRef} className='newTaskOptions inv'>
 				<input ref={inputRef} placeholder='Nome da nova tarefa'></input>
@@ -192,8 +189,8 @@ function Block(props: IBlockProps) {
 			</div>
 			{
 				tasks.map(
-					(task, index) => (
-						<Task index={index} tasks={tasks} setTasks={setTasks} task={task}/>
+					(task, i) => (
+						<Task blockIndex={blockIndex} index={i} name={task.name} urgent={task.urgent} />
 					)
 				)
 			}

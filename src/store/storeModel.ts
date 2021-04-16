@@ -1,13 +1,13 @@
-import task from './task';
-import ITaskStore from './task/ITaskStore';
+import block from './blocks';
+import IBlockStore from './blocks/IBlockStore';
 
-interface ITaskModel {
-	taskStore: ITaskStore;
+interface IBlockModel {
+	taskStore: IBlockStore;
 };
 
-const TaskModel:ITaskModel = {
-	taskStore: task,
+const BlockModel:IBlockModel = {
+	taskStore: block,
 }
 
-export { TaskModel };
-export type { ITaskModel };
+export { BlockModel };
+export type { IBlockModel };

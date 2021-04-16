@@ -1,6 +1,6 @@
 import { createStore } from 'easy-peasy';
-import { TaskModel } from './storeModel';
+import { BlockModel } from './storeModel';
 
-const store = createStore(TaskModel);
+const store = createStore(BlockModel);
 
 export default store;

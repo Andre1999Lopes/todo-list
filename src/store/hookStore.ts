@@ -1,7 +1,7 @@
 import { createTypedHooks } from 'easy-peasy';
-import { ITaskModel } from './storeModel';
+import { IBlockModel } from './storeModel';
 
-const typedHooks = createTypedHooks<ITaskModel>();
+const typedHooks = createTypedHooks<IBlockModel>();
 
 export const useStoreState = typedHooks.useStoreState;
 export const useStoreActions = typedHooks.useStoreActions;

@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
+import { useStoreState, useStoreActions } from '../../store/hookStore';
 import styled from 'styled-components';
 
 const StyledTask = styled.p`
@@ -46,37 +47,37 @@ const StyledTaskOptions = styled.div`
 	}
 `;
 
-interface task {
+interface IProps {
+	blockIndex: number;
+	index: number;
 	name: string;
 	urgent: boolean;
 }
 
-interface ITask {
-	index: number;
-	task: task;
-	tasks: Array<task>;
-	setTasks: React.Dispatch<React.SetStateAction<task[]>>;
-}
-
-function Task(props: ITask) {
+function Task({ blockIndex, index, name, urgent }:IProps) {
+	const task = useStoreState(state => state.taskStore.blocks[blockIndex].tasks[index]);
+	const setTaskFinished = useStoreActions(actions => actions.taskStore.setTaskFinished);
 	const taskOptionsRef = useRef() as React.MutableRefObject<HTMLDivElement>;
 	const taskRef = useRef() as React.MutableRefObject<HTMLParagraphElement>;
-	const [finishedTask, setFinishedTask] = useState(false);
-	const index = props.index;
+	const deleteTask = useStoreActions(actions => actions.taskStore.removeTask);
 
-	const deleteTask = () => {
-		const newTask = props.tasks.filter((val, ind) => ind !== index);
+	const handleDeleteTaskClick = () => {
 		taskOptionsRef.current.classList.toggle('inv');
-		props.setTasks(newTask);
+		deleteTask({blockIndex, taskIndex: index});
+	}
+
+	const handleSetTaskFinishedClick = () => {
+		taskOptionsRef.current.classList.toggle('inv');
+		setTaskFinished({ blockIndex, taskIndex: index, isFinished: task.finished });
 	}
 
 	return(
 		<>
 			<StyledTask
 				ref={taskRef}
-				className={(props.task.urgent ? 'urgent' : '') + (finishedTask ? ' finished' : '')}
+				className={(urgent ? 'urgent' : '') + (task.finished ? ' finished' : '')}
 			>
-				{props.task.name}
+				{name}
 				<span
 					onClick={() => {taskOptionsRef.current.classList.toggle('inv')}}
 				>
@@ -85,12 +86,9 @@ function Task(props: ITask) {
 				<StyledTaskOptions
 						ref={taskOptionsRef} className='inv'
 					>
-						<p onClick={() => {
-							taskOptionsRef.current.classList.toggle('inv');
-							setFinishedTask(!finishedTask);
-						}}
+						<p onClick={handleSetTaskFinishedClick}
 						>Marcar tarefa como concluída</p>
-						<p onClick={deleteTask}>Excluir tarefa</p>
+						<p onClick={handleDeleteTaskClick}>Excluir tarefa</p>
 				</StyledTaskOptions>
 			</StyledTask>
 		</>

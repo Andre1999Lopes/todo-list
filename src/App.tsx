@@ -32,11 +32,17 @@ function App() {
 		}
   }
 
+	const handleKeyPress = (e:React.KeyboardEvent) => {
+		if (e.key === 'Enter'){
+			addBlock();
+		}
+	}
+
   return (
     <>
       <Header />
-      <Input ref={inputRef} placeholder={'Nome do bloco de tarefas'} />
-      <Button onClick={() => addBlock()}>Adicionar bloco</Button>
+      <Input onKeyPress={handleKeyPress} ref={inputRef} placeholder={'Nome do bloco de tarefas'} />
+      <Button onClick={addBlock}>Adicionar bloco</Button>
 			<StyledSection>
 				{
 					blocks.map((block, index) => 

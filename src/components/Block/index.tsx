@@ -3,6 +3,32 @@ import { useStoreState, useStoreActions } from '../../store/hookStore';
 import styled from 'styled-components';
 import Task from '../Task';
 
+const OptionsDiv = styled.div`
+	display: block;
+	opacity: 1;
+	background-color: #ffffff;
+	padding: 2px;
+	border-radius: 5px;
+	z-index: 2;
+	position: absolute;
+	top: -20%;
+	margin: 10px 0 0 0;
+	user-select: none;
+	transition: all 100ms ease-out;
+
+	p {
+		border-radius: 5px;
+		cursor: pointer;
+		padding: 2px;
+		transition: all 100ms ease-out;
+	}
+
+	p:hover {
+		background-color: #3D4F51;
+		color: white;
+	}
+`;
+
 const StyledDiv = styled.div`
 	@font-face{
 		font-family: 'comfortaa';
@@ -67,32 +93,6 @@ const StyledDiv = styled.div`
 		margin: 5px auto;
 		font-family: 'comfortaa';
 		font-size: 105%;
-	}
-
-	& .options {
-		display: block;
-		opacity: 1;
-		background-color: #ffffff;
-		padding: 2px;
-		border-radius: 5px;
-    z-index: 2;
-    position: absolute;
-		top: -20%;
-		margin: 10px 0 0 0;
-		user-select: none;
-		transition: all 100ms ease-out;
-
-		p {
-			border-radius: 5px;
-    	cursor: pointer;
-			padding: 2px;
-			transition: all 100ms ease-out;
-		}
-
-		p:hover {
-			background-color: #3D4F51;
-			color: white;
-		}
 	}
 
 	& .addTaskBtn {
@@ -171,10 +171,10 @@ function Block({ index, name }:IProps ) {
 	return (
 		<StyledDiv>
 			<h1>{name}<span onClick={() => blockOptionsRef.current.classList.toggle('inv')}>...</span></h1>
-			<div ref={blockOptionsRef} className='options inv'>
+			<OptionsDiv ref={blockOptionsRef} className='inv'>
 				<p onClick={handleNewTaskClick}>Adicionar tarefa</p>
 				<p onClick={handleDeleteBlockClick}>Excluir bloco</p>
-			</div>
+			</OptionsDiv>
 			<div ref={newTaskOptionsRef} className='newTaskOptions inv'>
 				<input ref={inputRef} placeholder='Nome da nova tarefa'></input>
 				<select ref={selectRef}>

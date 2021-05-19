@@ -29,19 +29,19 @@ const StyledTaskOptions = styled.div`
 	background-color: #ffffff;
 	z-index: 1;
 	transition: all 100ms linear;
+`;
 
-	& p {
-		margin: 5px;
-		border-radius: 5px;
-		padding: 2px;
-		user-select: none;
-		cursor: pointer;
-		font-size: 80%;
-		width: 15vw;
-		transition: background-color 100ms linear;
-	}
+const StyledButton = styled.p`
+	margin: 5px;
+	border-radius: 5px;
+	padding: 2px;
+	user-select: none;
+	cursor: pointer;
+	font-size: 80%;
+	width: 15vw;
+	transition: background-color 100ms linear;
 
-	& p:hover {
+	:hover {
 		background-color: #3D4F51;
 		color: white;
 	}
@@ -86,9 +86,9 @@ function Task({ blockIndex, index, name, urgent }:IProps) {
 				<StyledTaskOptions
 						ref={taskOptionsRef} className='inv'
 					>
-						<p onClick={handleSetTaskFinishedClick}
-						>Marcar tarefa como concluída</p>
-						<p onClick={handleDeleteTaskClick}>Excluir tarefa</p>
+						<StyledButton onClick={handleSetTaskFinishedClick}
+						>Marcar tarefa como concluída</StyledButton>
+						<StyledButton onClick={handleDeleteTaskClick}>Excluir tarefa</StyledButton>
 				</StyledTaskOptions>
 			</StyledTask>
 		</>

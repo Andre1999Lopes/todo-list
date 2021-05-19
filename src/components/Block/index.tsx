@@ -12,6 +12,7 @@ const OptionsDiv = styled.div`
 	z-index: 2;
 	position: absolute;
 	top: -20%;
+	right: -40%;
 	margin: 10px 0 0 0;
 	user-select: none;
 	transition: all 100ms ease-out;
@@ -26,6 +27,68 @@ const OptionsDiv = styled.div`
 	p:hover {
 		background-color: #3D4F51;
 		color: white;
+	}
+`;
+
+const NewTaskDiv = styled.div`
+	position: absolute;
+	background-color: #ffffff;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	opacity: 1;
+	padding: 2px;
+	border-radius: 5px;
+	z-index: 1;
+	margin: 5px 0 0 0;
+	user-select: none;
+`;
+
+const StyledSelect = styled.select`
+	display: block;
+	outline: none;
+	margin: 5px auto;
+	font-family: 'comfortaa';
+	font-size: 105%;
+`;
+
+const StyledInput = styled.input`
+	color: black;
+	background-color: #d6d6d6;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	font-family: 'comfortaa';
+	transition: background-color 100ms linear;
+	font-size: 120%;
+
+	:focus {
+		background-color: #b8b8b8;
+	}
+`;
+
+const StyledButton = styled.p`
+	display: block;
+	background-color: #253031;
+	color: white;
+	width: 50%;
+	text-align: center;
+	padding: 5px;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 105%;
+	font-family: 'comfortaa';
+	border-radius: 10px;
+	transition: background-color 100ms linear;
+	user-select: none;
+
+	:hover {
+		cursor: pointer;
+		background-color: #3D4F51;
 	}
 `;
 
@@ -53,68 +116,6 @@ const StyledDiv = styled.div`
 		float: right;
     cursor: pointer;
 		user-select: none;
-	}
-
-	& .newTaskOptions {
-		position: absolute;
-		background-color: #ffffff;
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		opacity: 1;
-		padding: 2px;
-		border-radius: 5px;
-		z-index: 1;
-		margin: 5px 0 0 0;
-		user-select: none;
-	}
-
-	& .newTaskOptions input {
-		color: black;
-		background-color: #d6d6d6;
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		outline: none;
-		border: none;
-		border-radius: 5px;
-		font-family: 'comfortaa';
-		transition: background-color 100ms linear;
-		font-size: 120%;
-
-		:focus {
-			background-color: #b8b8b8;
-		}
-	}
-
-	& .newTaskOptions select {
-		display: block;
-		outline: none;
-		margin: 5px auto;
-		font-family: 'comfortaa';
-		font-size: 105%;
-	}
-
-	& .addTaskBtn {
-		display: block;
-		background-color: #253031;
-		color: white;
-		width: 50%;
-		text-align: center;
-		padding: 5px;
-		margin-top: 10px;
-		margin-left: auto;
-		margin-right: auto;
-		font-size: 105%;
-		font-family: 'comfortaa';
-		border-radius: 10px;
-		transition: background-color 100ms linear;
-		user-select: none;
-
-		:hover {
-			cursor: pointer;
-			background-color: #3D4F51;
-		}
 	}
 
 	& .inv {
@@ -175,18 +176,18 @@ function Block({ index, name }:IProps ) {
 				<p onClick={handleNewTaskClick}>Adicionar tarefa</p>
 				<p onClick={handleDeleteBlockClick}>Excluir bloco</p>
 			</OptionsDiv>
-			<div ref={newTaskOptionsRef} className='newTaskOptions inv'>
-				<input ref={inputRef} placeholder='Nome da nova tarefa'></input>
-				<select ref={selectRef}>
+			<NewTaskDiv ref={newTaskOptionsRef} className='inv'>
+				<StyledInput ref={inputRef} placeholder='Nome da nova tarefa'></StyledInput>
+				<StyledSelect ref={selectRef}>
 					<option value='false'>Normal</option>
 					<option value='true'>Urgente</option>
-				</select>
-				<p onClick={addTask} className='addTaskBtn'>Adicionar tarefa</p>
-				<p onClick={() => {
+				</StyledSelect>
+				<StyledButton onClick={addTask} className='addTaskBtn'>Adicionar tarefa</StyledButton>
+				<StyledButton onClick={() => {
 					inputRef.current.value = '';
 					newTaskOptionsRef.current.classList.toggle('inv');
-				}} className='addTaskBtn'>Cancelar</p>
-			</div>
+				}} className='addTaskBtn'>Cancelar</StyledButton>
+			</NewTaskDiv>
 			{
 				tasks.map(
 					(task, i) => (
